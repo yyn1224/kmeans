@@ -21,7 +21,7 @@
  * double inithe: min value for instance to be a new cluster
  * return    : 0 success else failed
  * ------------------------------------------------ */
-int kmeans(double* m, int n, int f, int k, int initk, double * cents, int * c, double * dis, int ths, int maxiter, double outli,double inithe);
+int kmeans(double* m, int n, int f, int k, int initk, double * cents, int * c, double * dis, int ths, int maxiter, double inithe);
 
 
 #endif //KMEANS_H

@@ -145,7 +145,6 @@ static void * estep_thread_call (void * arg){
     double *m     = TH->m;
     double *cents = TH->cents;
     double *dis   = TH->dis;
-    double outli  = TH->outli;
     int    *upd   = TH->upd;
     int    *cids  = TH->cids;
     int    *itst  = TH->itst;
@@ -165,7 +164,7 @@ static void * estep_thread_call (void * arg){
             for (int i = begin; i < end; i++){
                 int old = cids[i];
                 cids[i] = nearest(m + i * f, cents, k, f, dis + i);
-                if (dis[i] > outli) cids[i] = -1;
+                if (dis[i] > 0.3) cids[i] = -1;
                 if (old != cids[i]) *upd += 1;
             }
             *itst = (++e);
@@ -213,7 +212,7 @@ static void m_step_call(double *m, double *cents, int *c, int n, int f, int k, i
 /* *************************************************
  * brief  : kmeans++ algorithm
  * *************************************************/
-int kmeans(double * m, int n, int f, int k, int initk, double * cents, int * c, double * dis, int ths, int maxiter, double outli,double inithe){
+int kmeans(double * m, int n, int f, int k, int initk, double * cents, int * c, double * dis, int ths, int maxiter, double inithe){
     int niters = 0, update = 0, outlier = 0;
     if (initk < 0 || initk > k) return -1;
     if (initk < k){ // generate k - initk new cluster at most
@@ -235,7 +234,6 @@ int kmeans(double * m, int n, int f, int k, int initk, double * cents, int * c, 
         args[i].n     = n;
         args[i].f     = f;
         args[i].tid   = i;
-        args[i].outli = outli;
         args[i].upd   = thread_update + i;
         args[i].itst  = iter_process  + i;
         args[i].cids  = c;
