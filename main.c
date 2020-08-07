@@ -16,11 +16,12 @@
 
 void help(){
     fprintf(stderr, "kmeans usage:\n");
-    fprintf(stderr, "./kmeans -f [int] -k [int] -m [int] -n [int] -e [double] -d [string] -p [string] -o [string]\n");
+    fprintf(stderr, "./kmeans -f [int] -k [int] -m [int] -n [int] -i [double] -e [double] -d [string] -p [string] -o [string]\n");
     fprintf(stderr, "         -f dim\n");
     fprintf(stderr, "         -k max cluster\n");
     fprintf(stderr, "         -m thread count\n");
     fprintf(stderr, "         -n iteration\n");
+    fprintf(stderr, "         -i outlier threshhold\n");
     fprintf(stderr, "         -e min value for instance to be a new cluster\n");
     fprintf(stderr, "         -d input embeddings\n");
     fprintf(stderr, "         -p init centers\n");
@@ -35,6 +36,7 @@ int main(int argc, char *argv[]){
     int f, k, n, i, t, maxn, initk;
     int *c = NULL;
     double inithe;
+    double outli;
     double *m = NULL, *dist = NULL, *cents = NULL;
     char *inf = NULL, *o = ".", *initc = NULL;
     char buffer[4096] = {0};
@@ -44,11 +46,12 @@ int main(int argc, char *argv[]){
     k = atoi(argv[4]);
     t = atoi(argv[6]);
     maxn = atoi(argv[8]);
-    inithe = atof(argv[10]);
-    inf = argv[12];
-    initc = argv[14];
+    outli = atoi(argv[10]);
+    inithe = atof(argv[12]);
+    inf = argv[14];
+    initc = argv[16];
     if (argc == 17){
-        o = argv[16];
+        o = argv[18];
     }
     if (NULL == (fp = fopen(inf, "r"))){
         fprintf(stderr, "can not open input file\n");
@@ -101,7 +104,7 @@ int main(int argc, char *argv[]){
     }
 
 train_process:
-    k = kmeans(m, n, f, k, initk, cents, c, dist, t, maxn, inithe);
+    k = kmeans(m, n, f, k, initk, cents, c, dist, t, maxn, outli, inithe);
 
     // output the item clusid
     sprintf(of, "%s/clsid", o);
