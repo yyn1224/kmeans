@@ -24,6 +24,7 @@ typedef struct _thread_arg{
     double *m;
     double *cents;
     double *dis;
+    double outli;
     int * upd;
     int * cids;
     int * itst;
